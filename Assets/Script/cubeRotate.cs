@@ -7,67 +7,63 @@ namespace PLAYER
 {
     public class cubeRotate : MonoBehaviour
     {
-        private float angleNum;
+        private float angleNum; //格納用の角度
 
         private Vector3 contactPoints;
 
         private float cubeAngle; //角度
         private float cubeSizeHalf; //キューブの大きさの半分
-
-        private float currentAngel;
-
-        private float intervalCount;
+        private float currentAngel; //現在の角度
 
         private bool isCollision;
-
         private bool isRotate; //回転フラグ
 
 
         private Vector3 rotateAxis = Vector3.zero; //軸
         private Vector3 rotatePoint = Vector3.zero; //中心
-        private float stopCount;
+        private float stopCount; //停止時間
+        private Vector3 stopPos; //停止位置
+        private float widthB; //裏面の横幅
+        private float widthF; //前面の横幅
 
-        private Vector3 stopPos;
-        public float widthB;
-        public float widthF;
-
+        //初期位置セット
         private void InitSet(Vector3 pos, Vector3 rot, Vector3 scl)
         {
-            transform.position = pos;
-            transform.rotation = Quaternion.Euler(rot);
-            transform.localScale = scl;
+            transform.position = pos; //位置
+            transform.rotation = Quaternion.Euler(rot); //回転角
+            transform.localScale = scl; //規模
         }
 
         // Start is called before the first frame update
         private void Start()
         {
+            //初期化
             InitSet(P_POS, P_ROT, P_SCL); //初期位置セット
-            cubeSizeHalf = transform.localScale.x / 2.0f;
-            cubeAngle = 0.0f;
-            currentAngel = 0.0f;
-            intervalCount = 0.0f;
-            isRotate = false;
-            isCollision = false;
-            stopCount = 0.0f;
+            cubeSizeHalf = transform.localScale.x / 2.0f; //半キューブ
+            cubeAngle = 0.0f; //キューブの角度
+            currentAngel = 0.0f; //現在（カメラの）の回転角度
+            stopCount = 0.0f; //停止時間
+            isRotate = false; //回転フラグ
+            isCollision = false; //衝突フラグ
         }
 
         // Update is called once per frame
         private void Update()
         {
             //回転角度と現在の回転角度が相違 or 切替フラグがtrueのとき
-            if (angleNum != currentAngel || PlayerController.change)
+            if (angleNum != currentAngel || PlayerController.isChange)
                 isCollision = false;
 
             //切替フラグがtrue and 反転フラグがtrueのとき
-            if (PlayerController.change && PlayerController.inverse)
+            if (PlayerController.isChange && PlayerController.isInverse)
             {
                 SetInversePosition(); //現在位置を反転位置に設置
-                PlayerController.change = false; //切替フラグ終了
+                PlayerController.isChange = false; //切替フラグ終了
             }
-            else if (PlayerController.change && !PlayerController.inverse)
+            else if (PlayerController.isChange && !PlayerController.isInverse)
             {
                 SetForwardRotatePosition(); //現在位置を正転位置に設置
-                PlayerController.change = false; //切替フラグ終了
+                PlayerController.isChange = false; //切替フラグ終了
             }
 
             InverseStop(); //反転による停止
@@ -116,16 +112,6 @@ namespace PLAYER
         {
             SetStopPosition(); //停止位置に設置
             Debug.Log("衝突：" + isCollision); //衝突
-        }
-
-        private void Counting()
-        {
-            //壁にぶつかった後カウント
-            if (intervalCount <= INTERVAL)
-                intervalCount += 0.1f; //カウント開始
-            else
-                //isCollision = false; //衝突していない
-                intervalCount = 0.0f; //カウントリセット
         }
 
         //左移動
@@ -183,7 +169,7 @@ namespace PLAYER
         }
 
         //現在位置を反転位置に設置
-        public void SetInversePosition()
+        private void SetInversePosition()
         {
             widthF = 2.0f * Math.Abs(transform.position.x - 240.0f) + SPACE; //現在位置から反転位置までの横幅を取得
             transform.position = new Vector3(
@@ -194,7 +180,7 @@ namespace PLAYER
         }
 
         //現在位置を正転位置に設置
-        public void SetForwardRotatePosition()
+        private void SetForwardRotatePosition()
         {
             widthB = 2.0f * Math.Abs(transform.position.x - 720.0f) + SPACE; //現在位置から反転位置までの横幅を取得
             transform.position = new Vector3(
