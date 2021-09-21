@@ -1,3 +1,4 @@
+using PLAYER;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Call.ConstantValue;
@@ -17,17 +18,24 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Debug.Log(sceneName);
-
         sceneName = SceneManager.GetActiveScene().buildIndex; //現在のシーン番号を保存
-
 
         //タイトルシーンのとき
         if (sceneName == (int) SCENE_NAME.TITLE)
+            //if (Input.GetKeyDown(KeyCode.Alpha1)) SceneManager.LoadScene("sunny"); //難易度SUNNYへ
+            //else
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+                SceneManager.LoadScene("cloudy"); //難易度CLOUDYへ
+        //else if (Input.GetKeyDown(KeyCode.Alpha3)) SceneManager.LoadScene("rainy"); //難易度RAINYへ
+
+        if (cubeRotate.isGoal)
         {
-            if (Input.GetKeyDown(KeyCode.A)) SceneManager.LoadScene("sunny"); //難易度SUNNYへ
-            else if (Input.GetKeyDown(KeyCode.S)) SceneManager.LoadScene("cloudy"); //難易度CLOUDYへ
-            else if (Input.GetKeyDown(KeyCode.D)) SceneManager.LoadScene("rainy"); //難易度RAINYへ
+            SceneManager.LoadScene("result");
+            cubeRotate.isGoal = false;
         }
+
+        if (sceneName == (int) SCENE_NAME.RESULT)
+            if (Input.anyKey)
+                SceneManager.LoadScene("title");
     }
 }

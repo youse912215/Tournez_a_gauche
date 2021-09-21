@@ -41,20 +41,24 @@ namespace Call
         //計算用
         public const float ONE_QUARTER = 90.0f; //90度
         public const float ONE_CIRCLE = 360.0f; //360度
-        public const float SPEED = 15.0f; //回転する速度
+        public const float ROTATE_SPEED = 15.0f; //回転する速度
         public const float INTERVAL = 30.0f; //間隔
         public const float ROTATE_QUANTITY = 0.5f; //回転の変化量
         public const float STOP_TIME = 5.0f; //反転時の停止時間
+        public const float LATE_SPEED = 0.1f; //待機速度
+        public const float LATENCY = 1.0f; //待機時間
 
         public const float SPACE = 480.0f; //マップ間のスペース
         public const float INITIAL_Y = 10.0f; //初期Y地点
+        public static readonly Vector3 FALL_SPEED = new Vector3(0.0f, 5.0f, 0.0f); //落下速度
 
         //プレイヤー
         public static readonly Vector3 P_POS = new Vector3(215.0f, 10.0f, -55.0f); //位置
         public static readonly Vector3 P_ROT = new Vector3(0.0f, 0.0f, 0.0f); //角度
         public static readonly Vector3 P_SCL = new Vector3(5.0f, 5.0f, 5.0f); //規模
 
-        public static readonly Vector3 CENTER = new Vector3(145.0f, 10.0f, 10.0f); //中央
+        public static readonly Quaternion P_CLEAR = new Quaternion(180.0f, 180.0f, 0.0f, 0.0f); //クリア時の回転角
+        public static readonly Quaternion P_OVER = new Quaternion(-270.0f, 90.0f, 0.0f, 0.0f); //ゲームオーバー時の回転角
 
         public static readonly Color PINK_COLOR = new Color(1.0f, 0.665f, 0.959f, 1.0f); //ピンク
         public static readonly Color BLUE_COLOR = new Color(0.6f, 0.825f, 0.959f, 1.0f); //青

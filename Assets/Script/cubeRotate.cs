@@ -8,6 +8,8 @@ namespace PLAYER
     public class cubeRotate : MonoBehaviour
     {
         public static bool isWall; //壁フラグ
+        public static bool isGoal; //ゴールフラグ
+        public static uint isResult; //結果フラグ
         private float angleNum; //格納用の角度
 
         private Vector3 contactPoints; //衝突位置
@@ -17,7 +19,9 @@ namespace PLAYER
         private float currentAngel; //現在の角度
 
         private int currentWall; //現在の壁状態
+        private float fallCount; //落下時間
         private bool isCollision; //衝突フラグ
+        private bool isFloor; //床フラグ
         private bool isRotate; //回転フラグ
 
         private Vector3 rotateAxis = Vector3.zero; //軸
@@ -48,12 +52,20 @@ namespace PLAYER
             isCollision = false; //衝突フラグ
             currentWall = (int) WALL_COLOR.PINK; //現在の壁状態をピンクに
             isWall = false; //壁フラグ
+            isFloor = true; //床フラグ
+            fallCount = 0.0f; //落下時間
+            isGoal = false; //ゴールフラグ
+            isResult = 0b0000; //000
         }
 
         // Update is called once per frame
         private void Update()
         {
+            Debug.Log("床判定:" + isFloor);
+
             currentWall = PlayerController.color; //現在の色を取得
+
+            if (!isFloor) transform.position -= FALL_SPEED; //床フラグがないとき、落下
 
             //回転角度と現在の回転角度が相違 or 切替フラグがtrueのとき
             if (angleNum != currentAngel || PlayerController.isChange)
@@ -71,13 +83,15 @@ namespace PLAYER
                 PlayerController.isChange = false; //切替フラグ終了
             }
 
+            GetResult(); //結果を取得
+
             InverseStop(); //反転による停止
 
             CalcAngel(); //角度を計算
 
             if (isCollision) FixFloorPosition(); //プレイヤー床の位置を修正
 
-            if (PlayerController.isStop) return; //停止フラグがtrueのときスキップ
+            if (PlayerController.isStop || !isFloor) return; //停止フラグがtrue or 床フラグがfalseのときスキップ
 
             //衝突していないとき
             if (!PlayerController.isStop && !isCollision && PlayerController.rotate == 0.0f)
@@ -118,6 +132,23 @@ namespace PLAYER
         {
             foreach (var contact in collision.contacts) contactPoints = contact.point; //衝突位置を取得
 
+            //if (collision.gameObject.tag == "floor")
+            //{
+            //    isFloor = true;
+            //}
+            //else
+            if (collision.gameObject.tag == "fall")
+            {
+                fallCount += LATE_SPEED; //待機速度を加算
+                if (fallCount >= LATENCY) isFloor = false; //落下時間が待機時間を経過したとき、床フラグをfalse
+            }
+
+            if (collision.gameObject.tag == "goal")
+            {
+                isResult = 0b0001;
+                isGoal = true;
+            }
+
             if (collision.gameObject.tag != "wall") return; //壁以外のときスキップ
 
             //壁が現在の色以外のとき
@@ -139,6 +170,8 @@ namespace PLAYER
         private void OnCollisionExit(Collision collision)
         {
             foreach (var contact in collision.contacts) contactPoints = contact.point; //衝突位置を取得
+
+            if (collision.gameObject.tag == "fall") isFloor = false;
 
             if (collision.gameObject.tag != "wall") return; //壁以外のときスキップ
 
@@ -194,7 +227,7 @@ namespace PLAYER
             var sumAngle = 0.0f;
             while (sumAngle < ONE_QUARTER)
             {
-                cubeAngle = SPEED; //回転する角度を代入
+                cubeAngle = ROTATE_SPEED; //回転する角度を代入
                 sumAngle += cubeAngle; //回転速度を加算
 
                 if (sumAngle > ONE_QUARTER) cubeAngle -= sumAngle - ONE_QUARTER; //過剰に回転しないよう制御
@@ -258,6 +291,21 @@ namespace PLAYER
         {
             transform.position = new Vector3(stopPos.x, INITIAL_Y, stopPos.z); //現在位置に停止位置を
             transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f); //回転角をリセット
+        }
+
+        private void GetResult()
+        {
+            if (transform.position.y <= -300.0f)
+            {
+                isResult = 0b0010;
+                isGoal = true;
+            }
+        }
+
+        //例外処理
+        private void ExceptionHandling()
+        {
+            if (transform.position.y <= 0.0f && isFloor) SetStopPosition();
         }
     }
 }
