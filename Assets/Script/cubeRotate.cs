@@ -259,10 +259,5 @@ namespace PLAYER
             transform.position = new Vector3(stopPos.x, INITIAL_Y, stopPos.z); //現在位置に停止位置を
             transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f); //回転角をリセット
         }
-
-        public bool GetIsCollision()
-        {
-            return isWall;
-        }
     }
 }
