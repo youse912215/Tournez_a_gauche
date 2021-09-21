@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     {
         //‰Šú‰»
         angle = 0.0f; //ƒJƒƒ‰‰ñ“]Šp“x0
+        rotate = 0.0f; //‰ñ“]Šp0
         isRotate = (int) DIRECTION.NONE; //–³‰ñ“]ó‘Ô
         isInverse = false; //”ñ”½“]ó‘Ô
         isStop = false; //’â~

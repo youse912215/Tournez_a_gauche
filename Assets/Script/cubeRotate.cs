@@ -61,8 +61,6 @@ namespace PLAYER
         // Update is called once per frame
         private void Update()
         {
-            Debug.Log("床判定:" + isFloor);
-
             currentWall = PlayerController.color; //現在の色を取得
 
             if (!isFloor) transform.position -= FALL_SPEED; //床フラグがないとき、落下
@@ -182,7 +180,6 @@ namespace PLAYER
         private void FixFloorPosition()
         {
             SetStopPosition(); //停止位置に設置
-            Debug.Log("衝突：" + isCollision); //衝突
         }
 
         //左移動
