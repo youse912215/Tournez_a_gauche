@@ -56,12 +56,15 @@ namespace Call
 
         public static readonly Vector3 CENTER = new Vector3(145.0f, 10.0f, 10.0f); //中央
 
+        public static readonly Color PINK_COLOR = new Color(1.0f, 0.665f, 0.959f, 1.0f); //ピンク
+        public static readonly Color BLUE_COLOR = new Color(0.6f, 0.825f, 0.959f, 1.0f); //青
+
         //ステージ
         public static readonly Vector2 LEN = new Vector2(180.0f, 180.0f); //ステージ長さ
 
         //カメラ
-        public static readonly Vector3 CF_POS = new Vector3(150.0f, 400.0f, 10.0f); //前位置
-        public static readonly Vector3 CB_POS = new Vector3(815.0f, 400.0f, 10.0f); //後位置
+        public static readonly Vector3 CF_POS = new Vector3(220.0f, 400.0f, -55.0f); //前位置
+        public static readonly Vector3 CB_POS = new Vector3(885.0f, 400.0f, 10.0f); //後位置
         public static readonly Vector3 C_ROT = new Vector3(90.0f, 0.0f, 0.0f); //角度
         public static readonly Vector3 C_SCL = new Vector3(1.0f, 1.0f, 1.0f); //規模
     }

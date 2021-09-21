@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
         isInverse = false; //非反転状態
         isStop = false; //停止
         isChange = false; //切替なし
-        transform.position = CF_POS; //カメラを初期位置にセット
         color = (int) WALL_COLOR.PINK;
         isFlag = 0b0000; //0000にセット
     }
