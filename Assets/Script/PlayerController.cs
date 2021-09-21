@@ -1,6 +1,7 @@
 /* 主にカメラの操作 */
 
 using System;
+using PLAYER;
 using UnityEngine;
 using static Call.ConstantValue;
 
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public static bool isInverse; //反転フラグ
     public static bool isChange; //切替フラグ
     public static bool isStop; //停止フラグ
+    public static int color; //色
     private int isRotate; //回転フラグ
 
     // Start is called before the first frame update
@@ -31,11 +33,26 @@ public class PlayerController : MonoBehaviour
         isStop = false; //停止
         isChange = false; //切替なし
         transform.position = CF_POS; //カメラを初期位置にセット
+        color = (int) WALL_COLOR.PINK;
     }
 
     // Update is called once per frame
     private void Update()
     {
+        Debug.Log("色:" + color);
+
+        //色反転
+        if (Input.GetKeyDown(KeyCode.R) && !cubeRotate.isWall)
+        {
+            //壁状態が青のとき
+            if (color == (int) WALL_COLOR.BLUE)
+                color = (int) WALL_COLOR.PINK; //ピンクに変更
+            //壁状態がピンクのとき
+            else if (color == (int) WALL_COLOR.PINK)
+                color = (int) WALL_COLOR.BLUE; //青に変更
+        }
+
+        //左右反転
         if (!isStop && Input.GetKeyDown(KeyCode.E /*Joystick1Button1*/))
         {
             if (!isInverse)

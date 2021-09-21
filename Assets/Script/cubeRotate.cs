@@ -7,17 +7,18 @@ namespace PLAYER
 {
     public class cubeRotate : MonoBehaviour
     {
+        public static bool isWall;
         private float angleNum; //格納用の角度
 
-        private Vector3 contactPoints;
+        private Vector3 contactPoints; //衝突位置
 
         private float cubeAngle; //角度
         private float cubeSizeHalf; //キューブの大きさの半分
         private float currentAngel; //現在の角度
 
+        private int currentWall; //現在の壁状態
         private bool isCollision;
         private bool isRotate; //回転フラグ
-
 
         private Vector3 rotateAxis = Vector3.zero; //軸
         private Vector3 rotatePoint = Vector3.zero; //中心
@@ -45,11 +46,15 @@ namespace PLAYER
             stopCount = 0.0f; //停止時間
             isRotate = false; //回転フラグ
             isCollision = false; //衝突フラグ
+            currentWall = (int) WALL_COLOR.PINK; //現在の壁状態をピンクに
+            isWall = false; //壁フラグ
         }
 
         // Update is called once per frame
         private void Update()
         {
+            currentWall = PlayerController.color; //現在の色を取得
+
             //回転角度と現在の回転角度が相違 or 切替フラグがtrueのとき
             if (angleNum != currentAngel || PlayerController.isChange)
                 isCollision = false;
@@ -74,8 +79,6 @@ namespace PLAYER
 
             if (PlayerController.isStop) return; //停止フラグがtrueのときスキップ
 
-            Debug.Log("作動中");
-
             //衝突していないとき
             if (!PlayerController.isStop && !isCollision && PlayerController.rotate == 0.0f)
             {
@@ -90,13 +93,15 @@ namespace PLAYER
             }
         }
 
-        //衝突判定
+        //衝突したとき
         private void OnCollisionEnter(Collision collision)
         {
             foreach (var contact in collision.contacts) contactPoints = contact.point; //衝突位置を取得
 
-            //タグがwallのとき
-            if (collision.gameObject.tag == "wall")
+            if (collision.gameObject.tag != "wall") return; //タグがwallのとき
+
+            //壁が現在の色のとき
+            if (collision.gameObject.layer == currentWall)
             {
                 isCollision = true; //衝突フラグ開始
                 transform.position +=
@@ -108,6 +113,26 @@ namespace PLAYER
             }
         }
 
+        //衝突しているとき
+        private void OnCollisionStay(Collision collision)
+        {
+            foreach (var contact in collision.contacts) contactPoints = contact.point; //衝突位置を取得
+
+            if (collision.gameObject.tag != "wall") return; //壁以外のときスキップ
+            isWall = true; //壁フラグ開始
+        }
+
+        //通過を終えたとき
+        private void OnCollisionExit(Collision collision)
+        {
+            foreach (var contact in collision.contacts) contactPoints = contact.point; //衝突位置を取得
+
+            if (collision.gameObject.tag != "wall") return; //壁以外のときスキップ
+
+            isWall = false; //壁フラグ終了
+        }
+
+        //床の位置を修正
         private void FixFloorPosition()
         {
             SetStopPosition(); //停止位置に設置
@@ -219,6 +244,11 @@ namespace PLAYER
         {
             transform.position = new Vector3(stopPos.x, INITIAL_Y, stopPos.z); //現在位置に停止位置を
             transform.localRotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f); //回転角をリセット
+        }
+
+        public bool GetIsCollision()
+        {
+            return isWall;
         }
     }
 }

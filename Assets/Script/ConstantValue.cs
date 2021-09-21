@@ -6,6 +6,13 @@ namespace Call
     //定数値
     public class ConstantValue : MonoBehaviour
     {
+        //壁の色番号
+        public enum WALL_COLOR
+        {
+            PINK = 11,
+            BLUE = 12
+        }
+
         //計算用
         public const float ONE_QUARTER = 90.0f; //90度
         public const float ONE_CIRCLE = 360.0f; //360度
