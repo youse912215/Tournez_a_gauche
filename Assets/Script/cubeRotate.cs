@@ -7,7 +7,7 @@ namespace PLAYER
 {
     public class cubeRotate : MonoBehaviour
     {
-        public static bool isWall;
+        public static bool isWall; //壁フラグ
         private float angleNum; //格納用の角度
 
         private Vector3 contactPoints; //衝突位置
@@ -17,7 +17,7 @@ namespace PLAYER
         private float currentAngel; //現在の角度
 
         private int currentWall; //現在の壁状態
-        private bool isCollision;
+        private bool isCollision; //衝突フラグ
         private bool isRotate; //回転フラグ
 
         private Vector3 rotateAxis = Vector3.zero; //軸
@@ -119,6 +119,19 @@ namespace PLAYER
             foreach (var contact in collision.contacts) contactPoints = contact.point; //衝突位置を取得
 
             if (collision.gameObject.tag != "wall") return; //壁以外のときスキップ
+
+            //壁が現在の色のとき
+            if (collision.gameObject.layer == currentWall)
+            {
+                isCollision = true; //衝突フラグ開始
+                transform.position +=
+                    new Vector3(
+                        transform.position.x - contactPoints.x,
+                        0.0f,
+                        transform.position.z - contactPoints.z); //壁めり込み防止処理
+                GetStopPosition(); //停止位置取得
+            }
+
             isWall = true; //壁フラグ開始
         }
 
@@ -222,7 +235,7 @@ namespace PLAYER
             if (PlayerController.isStop)
             {
                 stopCount += 0.1f; //停止時間起動
-                SetStopPosition(); //停止位置に設置
+                if (PlayerController.isFlag == (uint) FLAG_KEY.INVERSE) SetStopPosition(); //停止位置に設置
             }
 
             //カウントがSTOP_TIME以上のとき
@@ -230,6 +243,7 @@ namespace PLAYER
             {
                 stopCount = 0.0f; //停止時間停止
                 PlayerController.isStop = false; //停止フラグ終了
+                PlayerController.isFlag = (uint) FLAG_KEY.NONE; //フラグ関連をリセット
             }
         }
 

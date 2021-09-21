@@ -6,6 +6,31 @@ namespace Call
     //定数値
     public class ConstantValue : MonoBehaviour
     {
+        public enum FLAG_KEY : uint
+        {
+            //なし
+            NONE = 0b0000,
+
+            //色反転
+            C_CHANGE = 0b0100,
+
+            //左右反転
+            INVERSE = 0b0010,
+
+            //回転
+            ROTATE = 0b0001
+        }
+
+        //シーン番号
+        public enum SCENE_NAME
+        {
+            TITLE,
+            SUNNY,
+            CLOUDY,
+            RAINY,
+            RESULT
+        }
+
         //壁の色番号
         public enum WALL_COLOR
         {
