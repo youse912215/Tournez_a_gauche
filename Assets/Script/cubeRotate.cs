@@ -100,8 +100,8 @@ namespace PLAYER
 
             if (collision.gameObject.tag != "wall") return; //タグがwallのとき
 
-            //壁が現在の色のとき
-            if (collision.gameObject.layer == currentWall)
+            //壁が現在の色以外のとき
+            if (collision.gameObject.layer != currentWall)
             {
                 isCollision = true; //衝突フラグ開始
                 transform.position +=
@@ -120,8 +120,8 @@ namespace PLAYER
 
             if (collision.gameObject.tag != "wall") return; //壁以外のときスキップ
 
-            //壁が現在の色のとき
-            if (collision.gameObject.layer == currentWall)
+            //壁が現在の色以外のとき
+            if (collision.gameObject.layer != currentWall)
             {
                 isCollision = true; //衝突フラグ開始
                 transform.position +=
