@@ -23,7 +23,12 @@ namespace Call
             ROTATE2 = 0b1000,
 
             //リセット
-            RESET = 0b0011
+            RESET = 0b0011,
+
+            //メニュー
+            MENU = 0b0101,
+
+            MENU2 = 0b0110
         }
 
         //シーン番号
@@ -53,9 +58,12 @@ namespace Call
         public const float LATE_SPEED = 0.1f; //待機速度
         public const float LATENCY = 1.0f; //待機時間
         public const int LEFTOVER = 30; //残り手数
+        public const float MENU_TIME = 2.5f; //メニュー表示最小時間
 
         public const float SPACE = 480.0f; //マップ間のスペース
         public const float INITIAL_Y = 10.0f; //初期Y地点
+
+        public static readonly int[] HANDLING = {0, 30, 40, 60}; //手数
         public static readonly Vector3 FALL_SPEED = new Vector3(0.0f, 5.0f, 0.0f); //落下速度
 
         //プレイヤー

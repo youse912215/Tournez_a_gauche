@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using static Call.ConstantValue;
+using static Call.CommonFunction;
 
 namespace PLAYER
 {
@@ -64,9 +65,9 @@ namespace PLAYER
         // Update is called once per frame
         private void Update()
         {
-            Debug.Log("衝突;" + isCollision);
-            Debug.Log("停止;" + PlayerController.isStop);
-            Debug.Log("リセット；" + PlayerController.isReset);
+            //Debug.Log("衝突;" + isCollision);
+            //Debug.Log("停止;" + PlayerController.isStop);
+            //Debug.Log("リセット；" + PlayerController.isReset);
 
             Reset();
 
@@ -336,7 +337,7 @@ namespace PLAYER
         private void ReturnPosition()
         {
             isCollision = false;
-            CountText.maxCount = LEFTOVER;
+            CountText.maxCount = SetCountValue(GameManager.sceneName);
             InitSet(P_POS, P_ROT, P_SCL); //初期位置セット
             Debug.Log("初期位置");
         }

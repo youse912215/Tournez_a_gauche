@@ -15,7 +15,6 @@ public class CountText : MonoBehaviour
     private void Start()
     {
         curStop = false;
-        maxCount = LEFTOVER;
     }
 
     // Update is called once per frame
@@ -28,10 +27,13 @@ public class CountText : MonoBehaviour
     {
         textComponent.text = "" + maxCount; //文字カウント
 
+        if (PlayerController.isFlag == (uint) FLAG_KEY.MENU) return;
+
         if (!curStop
             && PlayerController.isFlag != (uint) FLAG_KEY.NONE
             && PlayerController.isFlag != (uint) FLAG_KEY.ROTATE2
-            && PlayerController.isFlag != (uint) FLAG_KEY.RESET) CulcCount();
+            && PlayerController.isFlag != (uint) FLAG_KEY.RESET
+            && PlayerController.isFlag != (uint) FLAG_KEY.MENU2) CulcCount();
 
         //停止フラグがfalseに切り替わったとき
         if (PlayerController.isStop != curStop)
