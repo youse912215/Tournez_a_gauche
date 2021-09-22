@@ -23,34 +23,48 @@ public class PlayerController : MonoBehaviour
     public static int color; //色
     public static uint isFlag;
     public static bool isReset;
+    public static bool isMenu;
     private int isRotate; //回転フラグ
+    private float menuCount;
 
     // Start is called before the first frame update
     private void Start()
     {
-        //初期化
-        angle = 0.0f; //カメラ回転角度0
-        rotate = 0.0f; //回転角0
-        isRotate = (int) DIRECTION.NONE; //無回転状態
-        isInverse = false; //非反転状態
-        isStop = false; //停止
-        isChange = false; //切替なし
-        color = (int) WALL_COLOR.PINK;
-        isFlag = 0b0000; //0000にセット
-        isReset = false;
+        Initialize(); //初期化
     }
 
     // Update is called once per frame
     private void Update()
     {
-        Debug.Log("全フラグ" + isFlag);
-        Debug.Log("色" + color);
+        //Debug.Log("全フラグ" + isFlag);
+        //Debug.Log("色" + color);
+        Debug.Log("カウント" + menuCount);
+
+        AdditionCount(); //メニューカウント加算
+
+        if (!isMenu && Input.GetKey(KeyCode.Return)) isFlag = (uint) FLAG_KEY.NONE; //メニューフラグ終了
+
+        if (isFlag == (uint) FLAG_KEY.MENU) return; //メニューフラグのとき、他操作はスキップ
+
+        SubtractCount(); //メニューカウント減算
+
+        //メニュー
+        if (menuCount == 0.0f && isFlag == (uint) FLAG_KEY.NONE && Input.GetKey(KeyCode.Return))
+            isFlag = (uint) FLAG_KEY.MENU; //メニューフラグ開始
 
         //リセット
         if (isFlag == (uint) FLAG_KEY.NONE && Input.GetKey(KeyCode.Space))
         {
             isReset = true;
             isFlag = (uint) FLAG_KEY.RESET;
+            transform.Rotate(0.0f, 0.0f, angle);
+            color = (int) WALL_COLOR.PINK;
+            angle = 0.0f; //カメラ回転角度0
+            rotate = 0.0f; //回転角0
+            isRotate = (int) DIRECTION.NONE; //無回転状態
+            isInverse = false; //非反転状態
+            color = (int) WALL_COLOR.PINK;
+            menuCount = 0.0f;
         }
 
         //色反転
@@ -154,5 +168,40 @@ public class PlayerController : MonoBehaviour
                 isFlag = (uint) FLAG_KEY.NONE; //フラグ関連をリセット
             }
         }
+    }
+
+    private void AdditionCount()
+    {
+        if (isFlag == (uint) FLAG_KEY.MENU)
+        {
+            menuCount += LATE_SPEED;
+            if (menuCount >= MENU_TIME)
+            {
+                isMenu = false;
+                menuCount = MENU_TIME;
+            }
+        }
+    }
+
+    private void SubtractCount()
+    {
+        if (menuCount < 0.0f) menuCount = 0.0f;
+        else menuCount -= LATE_SPEED;
+    }
+
+    //初期化
+    private void Initialize()
+    {
+        angle = 0.0f; //カメラ回転角度0
+        rotate = 0.0f; //回転角0
+        isRotate = (int) DIRECTION.NONE; //無回転状態
+        isInverse = false; //非反転状態
+        isStop = false; //停止
+        isChange = false; //切替なし
+        color = (int) WALL_COLOR.PINK;
+        isFlag = 0b0000; //0000にセット
+        isReset = false;
+        isMenu = false;
+        menuCount = 0.0f;
     }
 }
