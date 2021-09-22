@@ -130,11 +130,6 @@ namespace PLAYER
         {
             foreach (var contact in collision.contacts) contactPoints = contact.point; //Õ“ËˆÊ’u‚ğæ“¾
 
-            //if (collision.gameObject.tag == "floor")
-            //{
-            //    isFloor = true;
-            //}
-            //else
             if (collision.gameObject.tag == "fall")
             {
                 fallCount += LATE_SPEED; //‘Ò‹@‘¬“x‚ğ‰ÁZ
@@ -292,7 +287,7 @@ namespace PLAYER
 
         private void GetResult()
         {
-            if (transform.position.y <= -300.0f)
+            if (CountText.maxCount == 0 || transform.position.y <= -300.0f)
             {
                 isResult = 0b0010;
                 isGoal = true;

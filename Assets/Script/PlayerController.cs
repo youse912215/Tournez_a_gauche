@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         //Debug.Log("êF:" + color);
         //Debug.Log("isFLAG:" + Convert.ToString(isFlag, 2));
-        //Debug.Log("isSTOP:" + isStop);
+        Debug.Log("isSTOP:" + isStop);
 
         //êFîΩì]
         if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.R) && !cubeRotate.isWall)
