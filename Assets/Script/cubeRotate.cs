@@ -28,6 +28,8 @@ namespace PLAYER
         private Vector3 rotatePoint = Vector3.zero; //中心
         private float stopCount; //停止時間
         private Vector3 stopPos; //停止位置
+
+        private float TT;
         private float widthB; //裏面の横幅
         private float widthF; //前面の横幅
 
@@ -56,17 +58,26 @@ namespace PLAYER
             fallCount = 0.0f; //落下時間
             isGoal = false; //ゴールフラグ
             isResult = 0b0000; //000
+            TT = 0.0f;
         }
 
         // Update is called once per frame
         private void Update()
         {
+            Debug.Log("衝突;" + isCollision);
+            Debug.Log("停止;" + PlayerController.isStop);
+            Debug.Log("リセット；" + PlayerController.isReset);
+
+            Reset();
+
+            ExceptionHandling();
+
             currentWall = PlayerController.color; //現在の色を取得
 
             if (!isFloor) transform.position -= FALL_SPEED; //床フラグがないとき、落下
 
             //回転角度と現在の回転角度が相違 or 切替フラグがtrueのとき
-            if (angleNum != currentAngel || PlayerController.isChange)
+            if (angleNum != currentAngel || PlayerController.isChange || PlayerController.isStop)
                 isCollision = false;
 
             //切替フラグがtrue and 反転フラグがtrueのとき
@@ -81,6 +92,7 @@ namespace PLAYER
                 PlayerController.isChange = false; //切替フラグ終了
             }
 
+
             GetResult(); //結果を取得
 
             InverseStop(); //反転による停止
@@ -92,7 +104,8 @@ namespace PLAYER
             if (PlayerController.isStop || !isFloor) return; //停止フラグがtrue or 床フラグがfalseのときスキップ
 
             //衝突していないとき
-            if (!PlayerController.isStop && !isCollision && PlayerController.rotate == 0.0f)
+            if (!PlayerController.isStop && !PlayerController.isReset && !isCollision &&
+                PlayerController.rotate == 0.0f)
             {
                 if (isRotate) return; //回転フラグがtrueのときスキップ
 
@@ -297,7 +310,46 @@ namespace PLAYER
         //例外処理
         private void ExceptionHandling()
         {
-            if (transform.position.y <= 0.0f && isFloor) SetStopPosition();
+            if (transform.position.y <= -50.0f && isFloor)
+            {
+                transform.position = new Vector3(transform.position.x, INITIAL_Y, transform.position.z);
+                Debug.Log("場外");
+            }
+        }
+
+        private void Reset()
+        {
+            if (PlayerController.isReset)
+            {
+                ReturnPosition();
+                TT += LATE_SPEED;
+
+                if (TT > STOP_TIME)
+                {
+                    PlayerController.isReset = false; //リセットフラグをリセット
+                    PlayerController.isFlag = (uint) FLAG_KEY.NONE; //フラグ関連をリセット
+                    TT = 0.0f;
+                }
+            }
+        }
+
+        private void ReturnPosition()
+        {
+            isCollision = false;
+            CountText.maxCount = LEFTOVER;
+            InitSet(P_POS, P_ROT, P_SCL); //初期位置セット
+            Debug.Log("初期位置");
+        }
+
+        private void StandBy(float time, float value, float max)
+        {
+            while (time <= max)
+            {
+                time += value;
+                Debug.Log(time);
+            }
+
+            time = 0.0f;
         }
     }
 }

@@ -20,7 +20,10 @@ namespace Call
             //回転
             ROTATE = 0b0001,
 
-            ROTATE2 = 0b1000
+            ROTATE2 = 0b1000,
+
+            //リセット
+            RESET = 0b0011
         }
 
         //シーン番号
@@ -46,10 +49,10 @@ namespace Call
         public const float ROTATE_SPEED = 15.0f; //回転する速度
         public const float INTERVAL = 30.0f; //間隔
         public const float ROTATE_QUANTITY = 0.5f; //回転の変化量
-        public const float STOP_TIME = 5.0f; //反転時の停止時間
+        public const float STOP_TIME = 5.0f; //停止時間
         public const float LATE_SPEED = 0.1f; //待機速度
         public const float LATENCY = 1.0f; //待機時間
-        public const int LEFTOVER = 2; //残り手数
+        public const int LEFTOVER = 30; //残り手数
 
         public const float SPACE = 480.0f; //マップ間のスペース
         public const float INITIAL_Y = 10.0f; //初期Y地点

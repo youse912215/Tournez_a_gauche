@@ -40,8 +40,8 @@ public class volume : MonoBehaviour
 
         if (m_isInput)
         {
-            if (Input.GetKey(KeyCode.LeftArrow)) v -= m_ScroolSpeed * Time.deltaTime;
-            if (Input.GetKey(KeyCode.RightArrow)) v += m_ScroolSpeed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.DownArrow)) v -= m_ScroolSpeed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.UpArrow)) v += m_ScroolSpeed * Time.deltaTime;
         }
 
         v = Mathf.Clamp(v, 0, 1);

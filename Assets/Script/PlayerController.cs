@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public static bool isStop; //停止フラグ
     public static int color; //色
     public static uint isFlag;
+    public static bool isReset;
     private int isRotate; //回転フラグ
 
     // Start is called before the first frame update
@@ -36,17 +37,24 @@ public class PlayerController : MonoBehaviour
         isChange = false; //切替なし
         color = (int) WALL_COLOR.PINK;
         isFlag = 0b0000; //0000にセット
+        isReset = false;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        //Debug.Log("色:" + color);
-        //Debug.Log("isFLAG:" + Convert.ToString(isFlag, 2));
-        Debug.Log("isSTOP:" + isStop);
+        Debug.Log("全フラグ" + isFlag);
+        Debug.Log("色" + color);
+
+        //リセット
+        if (isFlag == (uint) FLAG_KEY.NONE && Input.GetKey(KeyCode.Space))
+        {
+            isReset = true;
+            isFlag = (uint) FLAG_KEY.RESET;
+        }
 
         //色反転
-        if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.R) && !cubeRotate.isWall)
+        if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.W) && !cubeRotate.isWall)
         {
             //壁状態が青のとき
             if (color == (int) WALL_COLOR.BLUE)
@@ -65,7 +73,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //左右反転
-        if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.E /*Joystick1Button1*/))
+        if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.Q /*Joystick1Button1*/))
         {
             if (!isInverse)
             {
@@ -87,13 +95,14 @@ public class PlayerController : MonoBehaviour
         }
 
         //正転
-        if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f && Input.GetKey(KeyCode.Q /*Joystick1Button4*/))
+        if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f && Input.GetKey(KeyCode.LeftArrow /*Joystick1Button4*/))
         {
             isRotate = (int) DIRECTION.LEFT; //左回転
             isFlag = (uint) FLAG_KEY.ROTATE; //0001
         }
         //逆転
-        else if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f && Input.GetKey(KeyCode.W /*Joystick1Button5*/))
+        else if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f &&
+                 Input.GetKey(KeyCode.RightArrow /*Joystick1Button5*/))
         {
             isRotate = (int) DIRECTION.RIGHT; //右回転
             isFlag = (uint) FLAG_KEY.ROTATE; //0001

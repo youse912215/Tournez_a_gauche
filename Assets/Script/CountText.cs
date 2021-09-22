@@ -30,7 +30,8 @@ public class CountText : MonoBehaviour
 
         if (!curStop
             && PlayerController.isFlag != (uint) FLAG_KEY.NONE
-            && PlayerController.isFlag != (uint) FLAG_KEY.ROTATE2) CulcCount();
+            && PlayerController.isFlag != (uint) FLAG_KEY.ROTATE2
+            && PlayerController.isFlag != (uint) FLAG_KEY.RESET) CulcCount();
 
         //’â~ƒtƒ‰ƒO‚ªfalse‚ÉØ‚è‘Ö‚í‚Á‚½‚Æ‚«
         if (PlayerController.isStop != curStop)
