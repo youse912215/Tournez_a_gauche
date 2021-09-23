@@ -204,7 +204,12 @@ namespace PLAYER
         {
             foreach (var contact in collision.contacts) contactPoints = contact.point; //衝突位置を取得
 
-            if (collision.gameObject.tag == "fall") isFloor = false;
+            if (collision.gameObject.tag == "fall")
+            {
+                isFloor = false;
+                // 効果音を鳴らす
+                audioSource.PlayOneShot(sound4);
+            }
 
             if (collision.gameObject.tag != "wall") return; //壁以外のときスキップ
 

@@ -40,9 +40,9 @@ public class volume : MonoBehaviour
 
         if (m_isInput)
         {
-            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Joystick1Button4))
                 v -= m_ScroolSpeed * Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick1Button6))
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick1Button5))
                 v += m_ScroolSpeed * Time.deltaTime;
         }
 
