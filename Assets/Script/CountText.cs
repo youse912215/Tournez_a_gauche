@@ -15,7 +15,7 @@ public class CountText : MonoBehaviour
     private void Start()
     {
         curStop = false;
-        maxCount = 25;
+        //maxCount = 2;
     }
 
     // Update is called once per frame

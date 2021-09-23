@@ -63,7 +63,7 @@ namespace Call
         public const float SPACE = 480.0f; //マップ間のスペース
         public const float INITIAL_Y = 10.0f; //初期Y地点
 
-        public static readonly int[] HANDLING = {0, 30, 40, 60}; //手数
+        public static readonly int[] HANDLING = {0, 20, 35, 70}; //手数
         public static readonly Vector3 FALL_SPEED = new Vector3(0.0f, 5.0f, 0.0f); //落下速度
 
         //プレイヤー

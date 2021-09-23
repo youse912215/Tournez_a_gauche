@@ -11,8 +11,11 @@ namespace PLAYER
         public static bool isWall; //壁フラグ
         public static bool isGoal; //ゴールフラグ
         public static uint isResult; //結果フラグ
+        public static bool isCollision; //衝突フラグ
+        public static Vector3 currentPoints;
         private float angleNum; //格納用の角度
         private AudioSource audioSource;
+
 
         private Vector3 contactPoints; //衝突位置
 
@@ -22,7 +25,6 @@ namespace PLAYER
 
         private int currentWall; //現在の壁状態
         private float fallCount; //落下時間
-        private bool isCollision; //衝突フラグ
         private bool isFloor; //床フラグ
         private bool isRotate; //回転フラグ
 
@@ -68,6 +70,7 @@ namespace PLAYER
             isGoal = false; //ゴールフラグ
             isResult = 0b0000; //000
             TT = 0.0f;
+            currentPoints = new Vector3(0, 0, 0);
             audioSource = GetComponent<AudioSource>(); //Componentを取得
         }
 
@@ -120,9 +123,6 @@ namespace PLAYER
             {
                 if (isRotate) return; //回転フラグがtrueのときスキップ
 
-
-                Debug.Log("音あり");
-
                 if (PlayerController.angle == 0.0f) LeftMove(); //左に移動
                 else if (PlayerController.angle == 90.0f || PlayerController.angle == -270.0f) UpMove(); //上
                 else if (PlayerController.angle == 180.0f || PlayerController.angle == -180.0f) RightMove(); //右
@@ -144,6 +144,10 @@ namespace PLAYER
             if (collision.gameObject.layer != currentWall)
             {
                 audioSource.PlayOneShot(sound1);
+
+                currentPoints = contactPoints;
+
+                particle.isAlive = true;
 
                 isCollision = true; //衝突フラグ開始
                 transform.position +=
