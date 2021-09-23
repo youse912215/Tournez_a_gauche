@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Slider))]
 public class volume : MonoBehaviour
 {
-    [SerializeField] private readonly float m_ScroolSpeed = 0.5f; //キー入力で調整バーを動かすスピード
+    [SerializeField] private readonly float m_ScroolSpeed = 1.5f; //キー入力で調整バーを動かすスピード
     [SerializeField] private bool m_isInput; //キー入力で調整バーを動かせるようにするか
 
     private Slider m_Slider; //音量調整用スライダー
@@ -40,8 +40,10 @@ public class volume : MonoBehaviour
 
         if (m_isInput)
         {
-            if (Input.GetKey(KeyCode.DownArrow)) v -= m_ScroolSpeed * Time.deltaTime;
-            if (Input.GetKey(KeyCode.UpArrow)) v += m_ScroolSpeed * Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Joystick1Button5))
+                v -= m_ScroolSpeed * Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick1Button6))
+                v += m_ScroolSpeed * Time.deltaTime;
         }
 
         v = Mathf.Clamp(v, 0, 1);

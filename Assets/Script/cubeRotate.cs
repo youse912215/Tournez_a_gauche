@@ -74,9 +74,9 @@ namespace PLAYER
         // Update is called once per frame
         private void Update()
         {
-            //Debug.Log("è’ìÀ;" + isCollision);
-            //Debug.Log("í‚é~;" + PlayerController.isStop);
-            //Debug.Log("ÉäÉZÉbÉgÅG" + PlayerController.isReset);
+            Debug.Log("è’ìÀ;" + isCollision);
+            Debug.Log("í‚é~;" + PlayerController.isStop);
+            Debug.Log("ÉäÉZÉbÉgÅG" + PlayerController.isReset);
 
             Reset();
 
@@ -129,6 +129,7 @@ namespace PLAYER
                 else if (PlayerController.angle == 270.0f || PlayerController.angle == -90.0f) DownMove(); //â∫
                 StartCoroutine(MoveCube()); //âÒì]èàóù
                 currentAngel = angleNum; //åªç›ÇÃâÒì]äpìxÇï€ë∂
+                //audioSource.PlayOneShot(sound2);
             }
         }
 
@@ -217,7 +218,6 @@ namespace PLAYER
         {
             rotatePoint = transform.position + new Vector3(-cubeSizeHalf, -cubeSizeHalf, 0.0f);
             rotateAxis = new Vector3(0.0f, 0.0f, 1.0f);
-            audioSource.PlayOneShot(sound2);
         }
 
         //âEà⁄ìÆ
@@ -225,7 +225,6 @@ namespace PLAYER
         {
             rotatePoint = transform.position + new Vector3(cubeSizeHalf, -cubeSizeHalf, 0.0f);
             rotateAxis = new Vector3(0.0f, 0.0f, -1.0f);
-            audioSource.PlayOneShot(sound2);
         }
 
         //è„à⁄ìÆ
@@ -233,7 +232,6 @@ namespace PLAYER
         {
             rotatePoint = transform.position + new Vector3(0.0f, -cubeSizeHalf, cubeSizeHalf);
             rotateAxis = new Vector3(1.0f, 0.0f, 0.0f);
-            audioSource.PlayOneShot(sound2);
         }
 
         //â∫à⁄ìÆ
@@ -241,7 +239,6 @@ namespace PLAYER
         {
             rotatePoint = transform.position + new Vector3(0.0f, -cubeSizeHalf, -cubeSizeHalf);
             rotateAxis = new Vector3(-1.0f, 0.0f, 0.0f);
-            audioSource.PlayOneShot(sound2);
         }
 
         //äpìxÇåvéZ

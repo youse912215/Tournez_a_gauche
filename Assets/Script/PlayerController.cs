@@ -49,18 +49,24 @@ public class PlayerController : MonoBehaviour
 
         AdditionCount(); //メニューカウント加算
 
-        if (!isMenu && Input.GetKey(KeyCode.Return)) isFlag = (uint) FLAG_KEY.NONE; //メニューフラグ終了
+        if (!isMenu &&
+            (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Y) ||
+             Input.GetKeyDown(KeyCode.Joystick1Button4)))
+            isFlag = (uint) FLAG_KEY.NONE; //メニューフラグ終了
 
         if (isFlag == (uint) FLAG_KEY.MENU) return; //メニューフラグのとき、他操作はスキップ
 
         SubtractCount(); //メニューカウント減算
 
         //メニュー
-        if (menuCount == 0.0f && isFlag == (uint) FLAG_KEY.NONE && Input.GetKey(KeyCode.Return))
+        if (menuCount == 0.0f && isFlag == (uint) FLAG_KEY.NONE &&
+            (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Y) ||
+             Input.GetKeyDown(KeyCode.Joystick1Button4)))
             isFlag = (uint) FLAG_KEY.MENU; //メニューフラグ開始
 
         //リセット
-        if (isFlag == (uint) FLAG_KEY.NONE && Input.GetKey(KeyCode.Space))
+        if (isFlag == (uint) FLAG_KEY.NONE &&
+            (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button3)))
         {
             isReset = true;
             isFlag = (uint) FLAG_KEY.RESET;
@@ -75,7 +81,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //色反転
-        if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.W) && !cubeRotate.isWall)
+        if (isFlag == (uint) FLAG_KEY.NONE && !isStop && !cubeRotate.isWall &&
+            (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Joystick1Button1)))
         {
             audioSource.PlayOneShot(sound1); // 効果音を鳴らす
             //壁状態が青のとき
@@ -95,7 +102,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //左右反転
-        if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.Q /*Joystick1Button1*/))
+        if (isFlag == (uint) FLAG_KEY.NONE && !isStop &&
+            (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Joystick1Button2)))
         {
             audioSource.PlayOneShot(sound2); // 効果音を鳴らす
             if (!isInverse)
@@ -118,7 +126,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //正転
-        if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f && Input.GetKey(KeyCode.LeftArrow /*Joystick1Button4*/))
+        if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f &&
+            (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Joystick1Button11)))
         {
             audioSource.PlayOneShot(sound3); // 効果音を鳴らす
             isRotate = (int) DIRECTION.LEFT; //左回転
@@ -126,7 +135,7 @@ public class PlayerController : MonoBehaviour
         }
         //逆転
         else if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f &&
-                 Input.GetKey(KeyCode.RightArrow /*Joystick1Button5*/))
+                 (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Joystick1Button12)))
         {
             audioSource.PlayOneShot(sound3); // 効果音を鳴らす
             isRotate = (int) DIRECTION.RIGHT; //右回転

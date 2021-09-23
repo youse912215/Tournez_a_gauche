@@ -32,18 +32,18 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("タイトル");
 
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Joystick1Button0))
             {
                 SceneManager.LoadScene("sunny"); //難易度SUNNYへ
                 CountText.maxCount = SetCountValue((int) SCENE_NAME.SUNNY);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Joystick1Button1))
             {
                 SceneManager.LoadScene("cloudy"); //難易度CLOUDYへ
                 CountText.maxCount = SetCountValue((int) SCENE_NAME.CLOUDY);
                 Debug.Log("雲：" + CountText.maxCount);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Joystick1Button2))
             {
                 SceneManager.LoadScene("rainy"); //難易度RAINYへ
                 CountText.maxCount = SetCountValue((int) SCENE_NAME.RAINY);

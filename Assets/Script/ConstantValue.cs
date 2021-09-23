@@ -58,7 +58,7 @@ namespace Call
         public const float LATE_SPEED = 0.1f; //待機速度
         public const float LATENCY = 1.0f; //待機時間
         public const int LEFTOVER = 30; //残り手数
-        public const float MENU_TIME = 2.5f; //メニュー表示最小時間
+        public const float MENU_TIME = 0.5f; //メニュー表示最小時間
 
         public const float SPACE = 480.0f; //マップ間のスペース
         public const float INITIAL_Y = 10.0f; //初期Y地点
