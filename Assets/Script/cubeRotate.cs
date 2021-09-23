@@ -12,6 +12,7 @@ namespace PLAYER
         public static bool isGoal; //ゴールフラグ
         public static uint isResult; //結果フラグ
         private float angleNum; //格納用の角度
+        private AudioSource audioSource;
 
         private Vector3 contactPoints; //衝突位置
 
@@ -27,6 +28,13 @@ namespace PLAYER
 
         private Vector3 rotateAxis = Vector3.zero; //軸
         private Vector3 rotatePoint = Vector3.zero; //中心
+
+        //サウンド
+        public AudioClip sound1; //衝突時
+        public AudioClip sound2; //移動中
+        public AudioClip sound3; //ゲームクリア
+        public AudioClip sound4; //落とし穴
+
         private float stopCount; //停止時間
         private Vector3 stopPos; //停止位置
 
@@ -60,6 +68,7 @@ namespace PLAYER
             isGoal = false; //ゴールフラグ
             isResult = 0b0000; //000
             TT = 0.0f;
+            audioSource = GetComponent<AudioSource>(); //Componentを取得
         }
 
         // Update is called once per frame
@@ -100,7 +109,8 @@ namespace PLAYER
 
             CalcAngel(); //角度を計算
 
-            if (isCollision) FixFloorPosition(); //プレイヤー床の位置を修正
+            if (isCollision)
+                FixFloorPosition(); //プレイヤー床の位置を修正
 
             if (PlayerController.isStop || !isFloor) return; //停止フラグがtrue or 床フラグがfalseのときスキップ
 
@@ -109,6 +119,9 @@ namespace PLAYER
                 PlayerController.rotate == 0.0f)
             {
                 if (isRotate) return; //回転フラグがtrueのときスキップ
+
+
+                Debug.Log("音あり");
 
                 if (PlayerController.angle == 0.0f) LeftMove(); //左に移動
                 else if (PlayerController.angle == 90.0f || PlayerController.angle == -270.0f) UpMove(); //上
@@ -129,6 +142,8 @@ namespace PLAYER
             //壁が現在の色以外のとき
             if (collision.gameObject.layer != currentWall)
             {
+                audioSource.PlayOneShot(sound1);
+
                 isCollision = true; //衝突フラグ開始
                 transform.position +=
                     new Vector3(
@@ -154,6 +169,9 @@ namespace PLAYER
             {
                 isResult = 0b0001;
                 isGoal = true;
+
+                // 効果音を鳴らす
+                audioSource.PlayOneShot(sound3);
             }
 
             if (collision.gameObject.tag != "wall") return; //壁以外のときスキップ
@@ -161,6 +179,9 @@ namespace PLAYER
             //壁が現在の色以外のとき
             if (collision.gameObject.layer != currentWall)
             {
+                // 効果音を鳴らす
+                audioSource.PlayOneShot(sound1);
+
                 isCollision = true; //衝突フラグ開始
                 transform.position +=
                     new Vector3(
@@ -196,6 +217,7 @@ namespace PLAYER
         {
             rotatePoint = transform.position + new Vector3(-cubeSizeHalf, -cubeSizeHalf, 0.0f);
             rotateAxis = new Vector3(0.0f, 0.0f, 1.0f);
+            audioSource.PlayOneShot(sound2);
         }
 
         //右移動
@@ -203,6 +225,7 @@ namespace PLAYER
         {
             rotatePoint = transform.position + new Vector3(cubeSizeHalf, -cubeSizeHalf, 0.0f);
             rotateAxis = new Vector3(0.0f, 0.0f, -1.0f);
+            audioSource.PlayOneShot(sound2);
         }
 
         //上移動
@@ -210,6 +233,7 @@ namespace PLAYER
         {
             rotatePoint = transform.position + new Vector3(0.0f, -cubeSizeHalf, cubeSizeHalf);
             rotateAxis = new Vector3(1.0f, 0.0f, 0.0f);
+            audioSource.PlayOneShot(sound2);
         }
 
         //下移動
@@ -217,6 +241,7 @@ namespace PLAYER
         {
             rotatePoint = transform.position + new Vector3(0.0f, -cubeSizeHalf, -cubeSizeHalf);
             rotateAxis = new Vector3(-1.0f, 0.0f, 0.0f);
+            audioSource.PlayOneShot(sound2);
         }
 
         //角度を計算

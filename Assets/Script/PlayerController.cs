@@ -24,13 +24,20 @@ public class PlayerController : MonoBehaviour
     public static uint isFlag;
     public static bool isReset;
     public static bool isMenu;
+    private AudioSource audioSource;
     private int isRotate; //‰ñ“]ƒtƒ‰ƒO
     private float menuCount;
+
+    // Œø‰Ê‰¹—p•Ï”
+    public AudioClip sound1;
+    public AudioClip sound2;
+    public AudioClip sound3;
 
     // Start is called before the first frame update
     private void Start()
     {
         Initialize(); //‰Šú‰»
+        audioSource = GetComponent<AudioSource>(); //Component‚ğæ“¾
     }
 
     // Update is called once per frame
@@ -70,6 +77,7 @@ public class PlayerController : MonoBehaviour
         //F”½“]
         if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.W) && !cubeRotate.isWall)
         {
+            audioSource.PlayOneShot(sound1); // Œø‰Ê‰¹‚ğ–Â‚ç‚·
             //•Çó‘Ô‚ªÂ‚Ì‚Æ‚«
             if (color == (int) WALL_COLOR.BLUE)
             {
@@ -89,6 +97,7 @@ public class PlayerController : MonoBehaviour
         //¶‰E”½“]
         if (isFlag == (uint) FLAG_KEY.NONE && !isStop && Input.GetKeyDown(KeyCode.Q /*Joystick1Button1*/))
         {
+            audioSource.PlayOneShot(sound2); // Œø‰Ê‰¹‚ğ–Â‚ç‚·
             if (!isInverse)
             {
                 //”½“]ó‘Ô
@@ -111,6 +120,7 @@ public class PlayerController : MonoBehaviour
         //³“]
         if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f && Input.GetKey(KeyCode.LeftArrow /*Joystick1Button4*/))
         {
+            audioSource.PlayOneShot(sound3); // Œø‰Ê‰¹‚ğ–Â‚ç‚·
             isRotate = (int) DIRECTION.LEFT; //¶‰ñ“]
             isFlag = (uint) FLAG_KEY.ROTATE; //0001
         }
@@ -118,6 +128,7 @@ public class PlayerController : MonoBehaviour
         else if (isFlag == (uint) FLAG_KEY.NONE && rotate == 0.0f &&
                  Input.GetKey(KeyCode.RightArrow /*Joystick1Button5*/))
         {
+            audioSource.PlayOneShot(sound3); // Œø‰Ê‰¹‚ğ–Â‚ç‚·
             isRotate = (int) DIRECTION.RIGHT; //‰E‰ñ“]
             isFlag = (uint) FLAG_KEY.ROTATE; //0001
         }
