@@ -1,21 +1,20 @@
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using static Call.ConstantValue;
 
 public class TitleChange : MonoBehaviour
 {
-    public string txt;
-
-    // Start is called before the first frame update
-    [DllImport("user32.dll", EntryPoint = "FindWindow", CharSet = CharSet.Unicode)]
-    private static extern IntPtr FindWindow(string className, string windowName);
-
-    [DllImport("user32.dll", EntryPoint = "SetWindowText", CharSet = CharSet.Unicode)]
-    private static extern bool SetWindowText(IntPtr hwnd, string txt);
-
     private void Start()
     {
-        var hwnd = FindWindow(null, Application.productName);
-        SetWindowText(hwnd, txt);
+        var hwnd = GetWindow(null, Application.productName); //ウィンドウ取得
+        SetTitle(hwnd, title); //タイトルセット
     }
+
+    //DLL関数の呼び出し
+    [DllImport("user32.dll", EntryPoint = "FindWindow", CharSet = CharSet.Unicode)]
+    private static extern IntPtr GetWindow(string className, string windowName);
+
+    [DllImport("user32.dll", EntryPoint = "SetWindowText", CharSet = CharSet.Unicode)]
+    private static extern bool SetTitle(IntPtr hwnd, string txt);
 }

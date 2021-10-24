@@ -6,6 +6,8 @@ namespace Call
     //’è”’l
     public class ConstantValue : MonoBehaviour
     {
+        public const string title = "Tournez a gauche!";
+
         public enum FLAG_KEY : uint
         {
             //‚È‚µ

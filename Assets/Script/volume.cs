@@ -1,52 +1,48 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-//Sliderを使用するために必要
-
 [RequireComponent(typeof(Slider))]
 public class volume : MonoBehaviour
 {
-    [SerializeField] private readonly float m_ScroolSpeed = 1.5f; //キー入力で調整バーを動かすスピード
-    [SerializeField] private bool m_isInput; //キー入力で調整バーを動かせるようにするか
+    private Slider slider; //音量スライダー
+    private float vol; //ボリューム
+    private const float min = 0.0f; //最小値
+    private const float max = 1.0f; //最大値
 
-    private Slider m_Slider; //音量調整用スライダー
+    [SerializeField] private readonly float m_ScroolSpeed = 1.5f; //スピード
+    [SerializeField] private bool m_isInput; //キー入力フラグ
 
-    private float v;
+    private void Update()
+    {
+        vol = slider.value;
 
+        if (m_isInput) InputKeys();
+        slider.value = Mathf.Clamp(vol, min, max);
+    }
     private void Awake()
     {
-        m_Slider = GetComponent<Slider>();
-        m_Slider.value = AudioListener.volume;
-    }
-
-    private void OnEnable()
-    {
-        m_Slider.value = AudioListener.volume;
-        //スライダーの値が変更されたら音量も変更する
-        m_Slider.onValueChanged.AddListener(sliderValue => AudioListener.volume = sliderValue);
+        slider = GetComponent<Slider>();
+        slider.value = AudioListener.volume;
     }
 
     private void OnDisable()
     {
-        m_Slider.onValueChanged.RemoveAllListeners();
-        v = 0.0f;
+        //初期化
+        slider.onValueChanged.RemoveAllListeners();
+        vol = 0.0f;
     }
 
-    //キー入力による操作　いらないなら削除してもOK
-    private void Update()
+    private void OnEnable()
     {
-        v = m_Slider.value;
-        Debug.Log(v);
+        slider.value = AudioListener.volume; //音量変更
+        slider.onValueChanged.AddListener(sliderValue => AudioListener.volume = sliderValue);
+    }
 
-        if (m_isInput)
-        {
-            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Joystick1Button4))
-                v -= m_ScroolSpeed * Time.deltaTime;
+    private void InputKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Joystick1Button4))
+                vol -= m_ScroolSpeed * Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick1Button5))
-                v += m_ScroolSpeed * Time.deltaTime;
-        }
-
-        v = Mathf.Clamp(v, 0, 1);
-        m_Slider.value = v;
+                vol += m_ScroolSpeed * Time.deltaTime;
     }
 }

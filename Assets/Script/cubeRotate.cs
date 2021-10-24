@@ -12,9 +12,9 @@ namespace PLAYER
         public static bool isGoal; //ゴールフラグ
         public static uint isResult; //結果フラグ
         public static bool isCollision; //衝突フラグ
-        public static Vector3 currentPoints;
+        public static Vector3 currentPoints; //現在位置
         private float angleNum; //格納用の角度
-        private AudioSource audioSource;
+        private AudioSource audioSource; //音素材
 
 
         private Vector3 contactPoints; //衝突位置
@@ -40,7 +40,7 @@ namespace PLAYER
         private float stopCount; //停止時間
         private Vector3 stopPos; //停止位置
 
-        private float TT;
+        private float resetTime; //リセット時間
         private float widthB; //裏面の横幅
         private float widthF; //前面の横幅
 
@@ -69,7 +69,7 @@ namespace PLAYER
             fallCount = 0.0f; //落下時間
             isGoal = false; //ゴールフラグ
             isResult = 0b0000; //000
-            TT = 0.0f;
+            resetTime = 0.0f;
             currentPoints = new Vector3(0, 0, 0);
             audioSource = GetComponent<AudioSource>(); //Componentを取得
         }
@@ -77,13 +77,9 @@ namespace PLAYER
         // Update is called once per frame
         private void Update()
         {
-            Debug.Log("衝突;" + isCollision);
-            Debug.Log("停止;" + PlayerController.isStop);
-            Debug.Log("リセット；" + PlayerController.isReset);
+            Reset(); //リセット
 
-            Reset();
-
-            ExceptionHandling();
+            ExceptionHandling(); //例外処理
 
             currentWall = PlayerController.color; //現在の色を取得
 
@@ -343,45 +339,32 @@ namespace PLAYER
         private void ExceptionHandling()
         {
             if (transform.position.y <= -50.0f && isFloor)
-            {
                 transform.position = new Vector3(transform.position.x, INITIAL_Y, transform.position.z);
-                Debug.Log("場外");
-            }
         }
 
+        //リセット処理
         private void Reset()
         {
             if (PlayerController.isReset)
             {
                 ReturnPosition();
-                TT += LATE_SPEED;
+                resetTime += LATE_SPEED;
 
-                if (TT > STOP_TIME)
+                if (resetTime > STOP_TIME)
                 {
                     PlayerController.isReset = false; //リセットフラグをリセット
                     PlayerController.isFlag = (uint) FLAG_KEY.NONE; //フラグ関連をリセット
-                    TT = 0.0f;
+                    resetTime = 0.0f;
                 }
             }
         }
 
+        //位置を戻す
         private void ReturnPosition()
         {
             isCollision = false;
             CountText.maxCount = SetCountValue(GameManager.sceneName);
             InitSet(P_POS, P_ROT, P_SCL); //初期位置セット
-            Debug.Log("初期位置");
-        }
-
-        private void StandBy(float time, float value, float max)
-        {
-            while (time <= max)
-            {
-                time += value;
-                Debug.Log(time);
-            }
-
-            time = 0.0f;
         }
     }
 }
